@@ -63,11 +63,12 @@ int main() {
   }
 
   cout << "Type \"Terminate.\" to exit. \t" << endl;
-  
+
   // Accept incoming calls (and get a new socket) - client says
-  while((terminate != "Terminate.") || (terminate != "Terminate") || (terminate != "terminate")) {
+  /* while((terminate != "Terminate.") || (terminate != "Terminate") || (terminate != "terminate")) {
     send(server, buffer, bufferSize, 0);
   }
+  */
 
   // Reply with the requested public key
 
