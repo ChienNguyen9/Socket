@@ -31,6 +31,7 @@ int main() {
   string chat[bufferSize];
 
   struct sockaddr_in sa;
+  socklen_t size;
 
   memset(&sa, 0, sizeof(struct sockaddr_in));
 
@@ -68,7 +69,7 @@ int main() {
   }
 
   // Set up the buffer size for the socket
-  int size = sizeof(sa);
+  size = sizeof(sa);
   listen(sock, 3);
 
   // Wait for incoming calls - Accept()
