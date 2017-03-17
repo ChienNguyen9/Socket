@@ -41,7 +41,7 @@ int main() {
 
   // Gets all the info from the file and puts it in table
   ifstream file;
-  file.open(fileName);
+  file.open(fileName.c_str());
   while(file >> tempID >> tempKey) {
     table[count].userID = tempID;
     table[count].publicKey = tempKey;
@@ -63,7 +63,7 @@ int main() {
   // Bind an address to that socket
   sa.sin_family = AF_INET;
   sa.sin_port = htons(portNumber);
-  if (bind(sock, (struct structaddr*)&sa , sizeof(struct sockaddr_in)) < 0) {
+  if (bind(sock, (struct sockaddr*)&sa , sizeof(sa)) < 0) {
     cout << "Could not bind socket..." << endl;
     return (-1);
   }
