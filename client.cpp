@@ -21,7 +21,7 @@ int main() {
   string tempName, chatting = "";
   int portNumber, sock;
   int bufferSize = 2046;
-  string userName[bufferSize];
+  char chat[bufferSize];
   char myName[MAXHOSTNAME+1];
 
   struct sockaddr_in sa;
@@ -55,15 +55,13 @@ int main() {
   // Connect it to server
   if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) == 0) {
     // Send the user name to the server
-    while(while((userName != "Terminate.") || (userName != "Terminate") || (userName != "terminate")) {
+    while(while((chat != "Terminate.") || (chat != "Terminate") || (chat != "terminate")) {
       cout << "Enter a user name: ";
-      cin >> userName;
-      do{
-        send(sock, userName, bufferSize, 0);
-      }while(chatting == "");
+      cin >> chat;
+      send(sock, chat, bufferSize, 0);
     }
   }else{
-    cout << "Could not connect to server..." << endl;;
+    cout << "Could not connect to server..." << endl;
     return (-1);
   }
 
