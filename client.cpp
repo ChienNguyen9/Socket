@@ -17,8 +17,8 @@ using namespace std;
 
 int main() {
 
-  const int MAXHOSTNAME = 17;
-  string tempName;
+  const int MAXHOSTNAME = 9;
+  string tempName, chatting = "";
   int portNumber, sock;
   int bufferSize = 2046;
   string userName[bufferSize];
@@ -31,7 +31,7 @@ int main() {
 
   // Prompt user for server's user name
   cout << "Enter a server host name: ";
-  gethostbyname(myName, MAXHOSTNAME);
+  cin >> myName;
   hp = gethostbyname(myName);
   if(hp == NULL) {
     cout << "Could not get server's host name..." << endl;
@@ -53,22 +53,20 @@ int main() {
   sa.sin_port = htons(portNumber);
 
   // Connect it to server
-  if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) != 0) {
+  if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) == 0) {
+    // Send the user name to the server
+    while(while((userName != "Terminate.") || (userName != "Terminate") || (userName != "terminate")) {
+      cout << "Enter a user name: ";
+      cin >> userName;
+      do{
+        send(sock, userName, bufferSize, 0);
+      }while(chatting == "");
+    }
+  }else{
     cout << "Could not connect to server..." << endl;;
     return (-1);
   }
 
-  // Send the user name to the server
-  do{
-    cout << "Enter a user name: ";
-    cin >> userName;
-    send(sock, userName, bufferSize, 0);
-
-    recv(sock, tempName, bufferSize, 0);
-    if() {
-
-    }
-  }while(while((userName != "Terminate.") || (userName != "Terminate") || (userName != "terminate"));
 
   // Wait for the user's private key
 
