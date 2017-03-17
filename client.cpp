@@ -4,13 +4,14 @@
 // CLIENT
 
 #include <iostream>
-#include <string>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -38,20 +39,20 @@ int main() {
   sock = socket(AF_INET, SOCK_STREAM, 0);
   if(sock < 0) {
     cout << "Could not create socket..." << endl;
-    return;
+    return (-1);
   }
 
   sa.sin_family = AF_INET;
   sa.sin_port = htons(portNumber);
-  if (bind(s, &sa, sizeof(struct sockaddr_in)) < 0) {
+  if (bind(sock, &sa, sizeof(struct sockaddr_in)) < 0) {
     cout << "Could not bind socket..." << endl;
-    return;
+    return (-1);
   }
 
   // Connect it to server
   if(connect(sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) != 0) {
     cout << "Could not connect to server..." << endl;;
-    return;
+    return (-1);
   }
 
   // Send the user name to the server
