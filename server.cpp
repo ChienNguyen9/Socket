@@ -27,7 +27,7 @@ int main() {
   string fileName, tempID, tempKey, terminate = "something";
   bool running = true;
   int sock, portNumber, server;
-  int bufferSize = 1024;
+  int bufferSize = 2046;
   string chat[bufferSize];
 
   struct sockaddr_in sa;
@@ -83,10 +83,25 @@ int main() {
 
   // Accept incoming calls (and get a new socket) - client says
   while((terminate != "Terminate.") || (terminate != "Terminate") || (terminate != "terminate")) {
-    send(server, chat, bufferSize, 0);
-  }
+    cout << "Server connected..." << endl;
 
-  // Reply with the requested public key
+    recv(server, chat, bufferSize, 0);
+    cin >> tempID;
+    terminate = tempID;
+
+    for(int i = 0; i < 1024; i++) {
+      // Reply with the requested public key
+      if(tempID == table[i].userID) {
+        send(server, table[i].publicKey, bufferSize, 0);
+        break;
+      }
+
+      if((i == 1023) && (tempID != table[i].userID)) {
+        send(server, "NOT FOUND", bufferSize, 0);
+      }
+    }
+
+  }
 
   // Hang up
   close(sock);
