@@ -17,19 +17,24 @@ using namespace std;
 
 int main() {
 
-  string hostName;
+  const int MAXHOSTNAME = 17;
+  string userName, tempName;
   int portNumber, sock;
-  const int bufferSize = 1024;
-  char buffer[bufferSize];
+  int bufferSize = 2046;
+  string chat[bufferSize];
+  char myName[MAXHOSTNAME+1];
 
   struct sockaddr_in sa;
   struct hostent *hp;
 
   memset(&sa, 0, sizeof(struct sockaddr_in));
 
-  // Prompt uesr for user name
+  // Prompt user for server's user name
   cout << "Enter a server host name: ";
-  cin >> hostName;
+  hp = gethostbyname(myName, MAXHOSTNAME);
+  if(hp != "program.cs.uh.edu") {
+    cout << "Wrong server host name..." << endl;
+  }
 
   // Prompt user for server's port number
   cout << "Enter server port number: ";
@@ -46,13 +51,22 @@ int main() {
   sa.sin_port = htons(portNumber);
 
   // Connect it to server
-  if(connect(sock, (struct sockaddr*)&sa, sizeof(sa.sin_addr)) != 0) {
+  if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) != 0) {
     cout << "Could not connect to server..." << endl;;
     return (-1);
   }
 
   // Send the user name to the server
+  while((userName != "Terminate.") || (userName != "Terminate") || (userName != "terminate")) {
 
+    send(sock, chat, bufferSize, 0);
+
+    recv(sock, chat, bufferSize, 0);
+    cin >> tempName;
+    if() {
+
+    }
+  }
 
   // Wait for the user's private key
 
@@ -60,7 +74,6 @@ int main() {
   close(sock);
 
   // Print out the key it got from the server
-
 
   return 0;
 }
