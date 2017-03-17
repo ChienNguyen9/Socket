@@ -44,13 +44,9 @@ int main() {
 
   sa.sin_family = AF_INET;
   sa.sin_port = htons(portNumber);
-  if (bind(sock, &sa, sizeof(struct sockaddr_in)) < 0) {
-    cout << "Could not bind socket..." << endl;
-    return (-1);
-  }
 
   // Connect it to server
-  if(connect(sock, (struct sockaddr*)&server_addr, sizeof(server_addr)) != 0) {
+  if(connect(sock, (struct sockaddr*)&sa, sizeof(sa.sin_addr)) != 0) {
     cout << "Could not connect to server..." << endl;;
     return (-1);
   }
