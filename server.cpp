@@ -17,8 +17,8 @@ using namespace std;
 
 struct serverTable{
   string userID;
-  char publicKey;
-}
+  string publicKey;
+};
 
 int main() {
 
@@ -41,12 +41,12 @@ int main() {
   // Gets all the info from the file and puts it in table
   ifstream file;
   file.open(fileName);
-  while(fileName >> tempID >> tempKey) {
+  while(file >> tempID >> tempKey) {
     table[count].userID = tempID;
     table[count].publicKey = tempKey;
     count++;
   }
-  fileName.close();
+  file.close();
 
   // Prompt user for server's port number
   cout << "Enter server port number: ";
@@ -62,13 +62,13 @@ int main() {
   // Bind an address to that socket
   sa.sin_family = AF_INET;
   sa.sin_port = htons(portNumber);
-  if (bind(sock, &sa, sizeof(struct sockaddr_in)) < 0) {
+  if (bind(sock, (struct structaddr*)&sa , sizeof(struct sockaddr_in)) < 0) {
     cout << "Could not bind socket..." << endl;
     return (-1);
   }
 
   // Set up the buffer size for the socket
-  size = sizeof(sa);
+  int size = sizeof(sa);
   listen(sock, 3);
 
   // Wait for incoming calls - Accept()
