@@ -22,6 +22,9 @@ int main() {
   char buffer[bufferSize];
 
   struct sockaddr_in sa;
+  struct hostent *hp;
+
+  memset(&sa, 0, sizeof(struct sockaddr_in));
 
   // Prompt uesr for user name
   cout << "Enter a server host name: ";
