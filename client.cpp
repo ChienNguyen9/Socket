@@ -18,10 +18,10 @@ using namespace std;
 int main() {
 
   const int MAXHOSTNAME = 17;
-  string userName, tempName;
+  string tempName;
   int portNumber, sock;
   int bufferSize = 2046;
-  string chat[bufferSize];
+  string userName[bufferSize];
   char myName[MAXHOSTNAME+1];
 
   struct sockaddr_in sa;
@@ -31,9 +31,11 @@ int main() {
 
   // Prompt user for server's user name
   cout << "Enter a server host name: ";
-  hp = gethostbyname(myName, MAXHOSTNAME);
-  if(hp != "program.cs.uh.edu") {
-    cout << "Wrong server host name..." << endl;
+  gethostbyname(myName, MAXHOSTNAME);
+  hp = gethostbyname(myName);
+  if(hp == NULL) {
+    cout << "Could not get server's host name..." << endl;
+    return (-1);
   }
 
   // Prompt user for server's port number
@@ -57,16 +59,16 @@ int main() {
   }
 
   // Send the user name to the server
-  while((userName != "Terminate.") || (userName != "Terminate") || (userName != "terminate")) {
+  do{
+    cout << "Enter a user name: ";
+    cin >> userName;
+    send(sock, userName, bufferSize, 0);
 
-    send(sock, chat, bufferSize, 0);
-
-    recv(sock, chat, bufferSize, 0);
-    cin >> tempName;
+    recv(sock, tempName, bufferSize, 0);
     if() {
 
     }
-  }
+  }while(while((userName != "Terminate.") || (userName != "Terminate") || (userName != "terminate"));
 
   // Wait for the user's private key
 
