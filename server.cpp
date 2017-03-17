@@ -25,6 +25,7 @@ int main() {
   serverTable table[1024];
   int count = 0;
   string fileName, tempID, tempKey, terminate = "something";
+  string chatting = "";
   bool running = true;
   int sock, portNumber, server;
   int bufferSize = 2046;
