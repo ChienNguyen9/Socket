@@ -24,7 +24,7 @@ int main() {
 
   serverTable table[1024];
   int count = 0;
-  string fileName, tempID, tempKey, terminate = "something";
+  string fileName, tempID, tempKey, terminate = "";
   string chatting = "";
   bool running = true;
   int sock, portNumber, server;
@@ -83,11 +83,13 @@ int main() {
   cout << "Type \"Terminate.\" to exit. \t" << endl;
 
   // Accept incoming calls (and get a new socket) - client says
-  while((terminate != "Terminate.") || (terminate != "Terminate") || (terminate != "terminate")) {
+  while((terminate != "Terminate.") && (terminate != "Terminate") && (terminate != "terminate")) {
     cout << "Server connected..." << endl;
 
     recv(server, chat, bufferSize, 0);
-    strcpy(terminate, chat);
+    for(int i = 0; i < strlen(chat); i++) {
+      terminate += chat[i];
+    }
 
     for(int i = 0; i < 1024; i++) {
       // Reply with the requested public key
