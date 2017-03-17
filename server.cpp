@@ -28,7 +28,7 @@ int main() {
   string chatting = "";
   bool running = true;
   int sock, portNumber, server;
-  int bufferSize = 2046;
+  int bufferSize = 1048;
   char chat[bufferSize];
 
   struct sockaddr_in sa;
@@ -87,17 +87,18 @@ int main() {
     cout << "Server connected..." << endl;
 
     recv(server, chat, bufferSize, 0);
-    terminate = chat;
+    strcpy(terminate, chat);
 
     for(int i = 0; i < 1024; i++) {
       // Reply with the requested public key
       if(tempID == table[i].userID) {
-        send(server, table[i].publicKey, bufferSize, 0);
+        send(server, chat, bufferSize, 0);
         break;
       }
 
       if((i == 1023) && (tempID != table[i].userID)) {
-        send(server, "NOT FOUND", bufferSize, 0);
+        strcpy(chat, "NOT FOUND");
+        send(server, chat, bufferSize, 0);
       }
     }
 
