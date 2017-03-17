@@ -20,7 +20,7 @@ int main() {
   const int MAXHOSTNAME = 9;
   string tempName, chatting = "";
   int portNumber, sock;
-  int bufferSize = 2046;
+  int bufferSize = 1048;
   char chat[bufferSize];
   char myName[MAXHOSTNAME+1];
 
@@ -55,7 +55,7 @@ int main() {
   // Connect it to server
   if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) == 0) {
     // Send the user name to the server
-    while(while((chat != "Terminate.") || (chat != "Terminate") || (chat != "terminate")) {
+    while((chat != "Terminate.") && (chat != "Terminate") && (chat != "terminate")) {
       cout << "Enter a user name: ";
       cin >> chat;
       send(sock, chat, bufferSize, 0);
