@@ -29,7 +29,7 @@ int main() {
   bool running = true;
   int sock, portNumber, server;
   int bufferSize = 2046;
-  string chat[bufferSize];
+  char chat[bufferSize];
 
   struct sockaddr_in sa;
   socklen_t size;
@@ -87,8 +87,7 @@ int main() {
     cout << "Server connected..." << endl;
 
     recv(server, chat, bufferSize, 0);
-    cin >> tempID;
-    terminate = tempID;
+    terminate = chat;
 
     for(int i = 0; i < 1024; i++) {
       // Reply with the requested public key
