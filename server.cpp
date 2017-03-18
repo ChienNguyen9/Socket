@@ -82,8 +82,6 @@ int main() {
 
   // Accept incoming calls (and get a new socket) - client says
   while(terminate != "Terminate.") {
-    cout << "Server connected..." << endl;
-
     chatting = "";
     memset(chat, 0, sizeof(chat));
     do{
