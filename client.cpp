@@ -18,7 +18,7 @@ using namespace std;
 int main() {
 
   const int MAXHOSTNAME = 9;
-  bool running = true;
+  bool running = false;
   string tempName, chatting = "";
   string terminate = "";
   int portNumber, sock;
@@ -64,12 +64,14 @@ int main() {
         cout << "\nEnter a user name: ";
         cin >> chat;
         send(sock, chat, bufferSize, 0);
+        running = true;
 
         terminate = "";
         for(int i = 0; i < strlen(chat); i++) {
           terminate += chat[i];
         }
-      }while(*chat != "\0");
+      }while(running);
+      running = false;
 
       memset(chat, 0, sizeof(chat));
       do{
@@ -80,15 +82,16 @@ int main() {
           chatting += chat[a];
         }
 
-        if(terminate != "Terminate.") {
-          if(chat == "\0") {
-            cout << "NOT FOUND" << endl;
-          }else{
-            // Print out the key it got from the server
-            cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
-          }
+        if(chat == "\0") {
+          cout << "NOT FOUND" << endl;
+          running = true;
+        }else{
+          // Print out the key it got from the server
+          cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
+          running = true;
         }
-      }while(*chat != "\0");
+      }while(running);
+      running = false;
     }
   }else{
     cout << "Could not connect to server..." << endl;
