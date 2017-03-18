@@ -57,7 +57,7 @@ int main() {
   if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) == 0) {
     // Send the user name to the server
     while(terminate != "Terminate.") {
-      cout << "Enter a user name: ";
+      cout << "\nEnter a user name: ";
       cin >> chat;
       send(sock, chat, bufferSize, 0);
 
@@ -73,6 +73,7 @@ int main() {
         for(int i = 0; i < strlen(chat); i++) {
           chatting += chat[i];
         }
+
         if(chatting == "NOT FOUND") {
           cout << "NOT FOUND" << endl;
         }else{
