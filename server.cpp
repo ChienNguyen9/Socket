@@ -112,7 +112,9 @@ int main() {
         }
         foundCount++;
       }
-    }while(chatting == "");
+    }while(chatting != "");
+    chatting = "";
+    foundCount = 0;
   }
 
   // Hang up
