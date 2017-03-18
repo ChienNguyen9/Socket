@@ -67,6 +67,7 @@ int main() {
       }
 
       do{
+        // Wait for the user's private key
         recv(sock, chat, bufferSize, 0);
 
         for(int i = 0; i < strlen(chat); i++) {
@@ -75,9 +76,10 @@ int main() {
         if(chatting == "NOT FOUND") {
           cout << "NOT FOUND" << endl;
         }else{
-          cout << "The public key for user " << terminate << " is " << chatting << ". ";
+          // Print out the key it got from the server
+          cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
         }
-      }while(chatting = "");
+      }while(chatting == "");
       chatting = "";
     }
   }else{
@@ -85,13 +87,8 @@ int main() {
     return (-1);
   }
 
-
-  // Wait for the user's private key
-
   // Close the socket
   close(sock);
-
-  // Print out the key it got from the server
 
   return 0;
 }
