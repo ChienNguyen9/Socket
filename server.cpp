@@ -23,7 +23,7 @@ struct serverTable{
 int main() {
 
   serverTable table[1024];
-  bool running = false;
+  bool running = true;
   int count = 0;
   string fileName, tempID, tempKey, terminate = "";
   string chatting = "";
@@ -80,50 +80,48 @@ int main() {
     return (-1);
   }
 
-  cout << "\nType \"Terminate.\" to exit. \n" << endl;
-
   // Accept incoming calls (and get a new socket) - client says
   while(terminate != "Terminate.") {
     cout << "Server connected..." << endl;
 
+    chatting = "";
     memset(chat, 0, sizeof(chat));
     do{
       recv(server, chat, bufferSize, 0);
 
-      running = true;
+      running = false;
       terminate = "";
       for(int i = 0; i < strlen(chat); i++) {
         terminate += chat[i];
         chatting += chat[i];
       }
     }while(running);
-    running = false;
+    running = true;
 
-    memset(chat, 0, sizeof(chat));
     if(chatting != "Terminate.") {
       do{
-        for(int i = 0; i < count; i++) {
+        for(int i = 0; i < 1024; i++) {
           // Reply with the requested public key
           if(chatting == table[i].userID) {
             tempKey = table[i].publicKey;
             for(int k = 0; k < tempKey.length(); k++) {
               chat[k] = tempKey[k];
             }
-            running = true;
+            running = false;
             send(server, chat, bufferSize, 0);
             break;
           }
 
-          if(count <= i) {
-            memset(chat, 0, sizeof(chat));
-            running = true;
+          if(table[i+1].userID == "") {
+            chat[0] = ' ';
+            running = false;
             send(server, chat, bufferSize, 0);
             break;
           }
         }
       }while(running);
-      running = false;
     }
+    running = true;
 
     if(terminate == "Terminate.") {
       close(server);
