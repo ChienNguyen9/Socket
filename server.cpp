@@ -25,7 +25,7 @@ int main() {
   serverTable table[1024];
   int count = 0;
   string fileName, tempID, tempKey, terminate = "";
-  string chatting = "";
+  string chatting = "", found = "NOT FOUND";
   bool running = true;
   int sock, portNumber, server;
   int bufferSize = 1048;
@@ -98,15 +98,17 @@ int main() {
         // Reply with the requested public key
         if(tempID == table[i].userID) {
           tempKey = table[i].publicKey;
-          for(int k = 0; k < strlen(table[k].publicKey); k++) {
+          for(int k = 0; k < (table[i].publicKey).length(); k++) {
             chat[k] = tempKey[k];
           }
           send(server, chat, bufferSize, 0);
           break;
         }
 
-        if(table[i].userID == NULL) {
-          strcpy(chat, "NOT FOUND");
+        if(table[i].userID == "") {
+          for(int r = 0; r < found.length(); i++) {
+            chat[r] = found[r];
+          }
           send(server, chat, bufferSize, 0);
           break;
         }
