@@ -55,7 +55,7 @@ int main() {
   // Connect it to server
   if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) == 0) {
     // Send the user name to the server
-    while((chat != "Terminate.") && (chat != "Terminate") && (chat != "terminate")) {
+    while(chat != "Terminate.") {
       cout << "Enter a user name: ";
       cin >> chat;
       send(sock, chat, bufferSize, 0);
