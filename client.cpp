@@ -77,7 +77,7 @@ int main() {
         }
 
         if(terminate != "Terminate.") {
-          if(chatting == "NOT FOUND") {
+          if(chatting == "") {
             cout << "NOT FOUND" << endl;
             running = false;
           }else{
