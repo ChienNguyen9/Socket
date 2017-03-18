@@ -97,13 +97,18 @@ int main() {
       for(int i = 0; i < 1024; i++) {
         // Reply with the requested public key
         if(tempID == table[i].userID) {
+          tempKey = table[i].publicKey;
+          for(int k = 0; k < strlen(table[k].publicKey); k++) {
+            chat[k] = tempKey[k];
+          }
           send(server, chat, bufferSize, 0);
           break;
         }
 
-        if((i == 1023) && (tempID != table[i].userID)) {
+        if(table[i].userID == NULL) {
           strcpy(chat, "NOT FOUND");
           send(server, chat, bufferSize, 0);
+          break;
         }
       }
     }while(chatting == "");
