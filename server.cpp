@@ -24,6 +24,7 @@ int main() {
 
   serverTable table[1024];
   int count = 0;
+  bool running = true;
   string fileName, tempID, tempKey, terminate = "";
   string chatting = "";
   int sock, portNumber, server;
@@ -47,6 +48,7 @@ int main() {
     table[count].publicKey = tempKey;
     count++;
   }
+  file.close();
 
   // Prompt user for server's port number
   cout << "Enter server port number: ";
@@ -84,35 +86,49 @@ int main() {
   while(terminate != "Terminate.") {
     cout << "Server connected..." << endl;
 
-    recv(server, chat, bufferSize, 0);
-    terminate = "";
-    for(int i = 0; i < strlen(chat); i++) {
-      terminate += chat[i];
-      chatting += chat[i];
-    }
+    memset(chat, 0, sizeof(chat));
+    do{
+      recv(server, chat, bufferSize, 0);
+      if(chat != "\0") {
+        running = false;
+      }
 
-    for(int i = 0; i < count; i++) {
-      // Reply with the requested public key
-      if(chatting == table[i].userID) {
-        tempKey = table[i].publicKey;
-        for(int k = 0; k < tempKey.length(); k++) {
-          chat[k] = tempKey[k];
+      terminate = "";
+      for(int i = 0; i < strlen(chat); i++) {
+        terminate += chat[i];
+        chatting += chat[i];
+      }
+    }while(running);
+    running = true;
+
+    if(chatting != "Terminate.") {
+      do{
+        for(int i = 0; i < count; i++) {
+          // Reply with the requested public key
+          if(chatting == table[i].userID) {
+            tempKey = table[i].publicKey;
+            for(int k = 0; k < tempKey.length(); k++) {
+              chat[k] = tempKey[k];
+            }
+            running = false;
+            send(server, chat, bufferSize, 0);
+            break;
+          }
+
+          if(count <= i) {
+            memset(chat, 0, sizeof(chat))
+            running = false;
+            send(server, chat, bufferSize, 0);
+            break;
+          }
         }
-        send(server, chat, bufferSize, 0);
-        break;
-      }
-
-      if(count <= i) {
-        chat = "";
-        send(server, chat, bufferSize, 0);
-        break;
-      }
+      }while(running);
+      running = true;
     }
   }
 
   // Hang up
   close(sock);
-  file.close();
 
   return 0;
 }
