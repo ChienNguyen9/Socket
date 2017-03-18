@@ -24,7 +24,6 @@ int main() {
 
   serverTable table[1024];
   int count = 0;
-  bool running = true;
   string fileName, tempID, tempKey, terminate = "";
   string chatting = "";
   int sock, portNumber, server;
@@ -89,18 +88,15 @@ int main() {
     memset(chat, 0, sizeof(chat));
     do{
       recv(server, chat, bufferSize, 0);
-      if(chat != "\0") {
-        running = false;
-      }
 
       terminate = "";
       for(int i = 0; i < strlen(chat); i++) {
         terminate += chat[i];
         chatting += chat[i];
       }
-    }while(running);
-    running = true;
+    }while(*chat != "\0");
 
+    memset(chat, 0, sizeof(chat));
     if(chatting != "Terminate.") {
       do{
         for(int i = 0; i < count; i++) {
@@ -110,20 +106,21 @@ int main() {
             for(int k = 0; k < tempKey.length(); k++) {
               chat[k] = tempKey[k];
             }
-            running = false;
             send(server, chat, bufferSize, 0);
             break;
           }
 
           if(count <= i) {
-            memset(chat, 0, sizeof(chat))
-            running = false;
+            memset(chat, 0, sizeof(chat));
             send(server, chat, bufferSize, 0);
             break;
           }
         }
-      }while(running);
-      running = true;
+      }while(*chat != "\0");
+    }
+
+    if(terminate == "Terminate.") {
+      close(server);
     }
   }
 
