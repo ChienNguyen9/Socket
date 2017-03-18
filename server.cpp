@@ -25,7 +25,7 @@ int main() {
   serverTable table[1024];
   int count = 0;
   string fileName, tempID, tempKey, terminate = "";
-  string chatting = "", notFound = "NOT FOUND";
+  string chatting = "";
   bool running = true;
   int sock, portNumber, server;
   int bufferSize = 1048;
@@ -85,7 +85,7 @@ int main() {
   while(terminate != "Terminate.") {
     cout << "Server connected..." << endl;
     running = true;
-    
+
     do {
       recv(server, chat, bufferSize, 0);
       terminate = "";
@@ -106,10 +106,8 @@ int main() {
           break;
         }
 
-        if(count == i) {
-          for(int r = 0; r < notFound.length()+1; i++) {
-            chat[r] = notFound[r];
-          }
+        if(count <= i) {
+          chat = "";
           send(server, chat, bufferSize, 0);
           running = false;
           break;
