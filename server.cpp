@@ -48,7 +48,6 @@ int main() {
     table[count].publicKey = tempKey;
     count++;
   }
-  file.close();
 
   // Prompt user for server's port number
   cout << "Enter server port number: ";
@@ -96,10 +95,9 @@ int main() {
 
       for(int i = 0; i < 1024; i++) {
         // Reply with the requested public key
-        if(tempID == table[i].userID) {
-          tempKey = table[i].publicKey;
+        if(chatting == table[i].userID) {
           for(int k = 0; k < (table[i].publicKey).length(); k++) {
-            chat[k] = tempKey[k];
+            chat[k] = (table[i].length())[k];
           }
           send(server, chat, bufferSize, 0);
           break;
@@ -119,6 +117,7 @@ int main() {
 
   // Hang up
   close(sock);
+  file.close();
 
   return 0;
 }
