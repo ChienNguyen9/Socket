@@ -23,9 +23,9 @@ struct serverTable{
 int main() {
 
   serverTable table[1024];
-  int count = 0, notFound = 0;
+  int count = 0, foundCount = 0;
   string fileName, tempID, tempKey, terminate = "";
-  string chatting = "", found = "NOT FOUND";
+  string chatting = "", notfound = "NOT FOUND";
   bool running = true;
   int sock, portNumber, server;
   int bufferSize = 1048;
@@ -93,27 +93,27 @@ int main() {
         chatting += chat[i];
       }
 
-      for(int i = 0; i < count+1; i++) {
+      for(int i = 0; i <= count; i++) {
         // Reply with the requested public key
         if(chatting == table[i].userID) {
-          for(int k = 0; k < (table[i].publicKey).length(); k++) {
-            chat[k] = (table[i].publicKey)[k];
+          tempKey = table[i].publicKey;
+          for(int k = 0; k < tempKey.length(); k++) {
+            chat[k] = tempKey[k];
           }
           send(server, chat, bufferSize, 0);
           break;
         }
-
-        if(count+1 == notFound) {
-          for(int r = 0; r < found.length(); i++) {
-            chat[r] = found[r];
+        chatting = "";
+        if(count == foundCount) {
+          for(int r = 0; r < notFound.length(); i++) {
+            chat[r] = notFound[r];
           }
           send(server, chat, bufferSize, 0);
           break;
         }
-        notFound++;
+        foundCount++;
       }
     }while(chatting == "");
-    chatting = "";
   }
 
   // Hang up
