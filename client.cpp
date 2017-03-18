@@ -59,19 +59,19 @@ int main() {
     // Send the user name to the server
     while(terminate != "Terminate.") {
 
+      memset(chat, 0, sizeof(chat));
       do{
         cout << "\nEnter a user name: ";
         cin >> chat;
         send(sock, chat, bufferSize, 0);
-        running = false;
 
         terminate = "";
         for(int i = 0; i < strlen(chat); i++) {
           terminate += chat[i];
         }
-      }while(running);
-      running = true;
+      }while(*chat != "\0");
 
+      memset(chat, 0, sizeof(chat));
       do{
         // Wait for the user's private key
         recv(sock, chat, bufferSize, 0);
@@ -83,15 +83,12 @@ int main() {
         if(terminate != "Terminate.") {
           if(chat == "\0") {
             cout << "NOT FOUND" << endl;
-            running = false;
           }else{
             // Print out the key it got from the server
             cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
-            running = false;
           }
         }
-      }while(running);
-      running = true;
+      }while(*chat != "\0");
     }
   }else{
     cout << "Could not connect to server..." << endl;
