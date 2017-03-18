@@ -26,7 +26,6 @@ int main() {
   int count = 0;
   string fileName, tempID, tempKey, terminate = "";
   string chatting = "";
-  bool running = true;
   int sock, portNumber, server;
   int bufferSize = 1048;
   char chat[bufferSize];
@@ -84,36 +83,31 @@ int main() {
   // Accept incoming calls (and get a new socket) - client says
   while(terminate != "Terminate.") {
     cout << "Server connected..." << endl;
-    running = true;
 
-    do {
-      recv(server, chat, bufferSize, 0);
-      terminate = "";
-      for(int i = 0; i < strlen(chat); i++) {
-        terminate += chat[i];
-        chatting += chat[i];
+    recv(server, chat, bufferSize, 0);
+    terminate = "";
+    for(int i = 0; i < strlen(chat); i++) {
+      terminate += chat[i];
+      chatting += chat[i];
+    }
+
+    for(int i = 0; i < count; i++) {
+      // Reply with the requested public key
+      if(chatting == table[i].userID) {
+        tempKey = table[i].publicKey;
+        for(int k = 0; k < tempKey.length(); k++) {
+          chat[k] = tempKey[k];
+        }
+        send(server, chat, bufferSize, 0);
+        break;
       }
 
-      for(int i = 0; i < count; i++) {
-        // Reply with the requested public key
-        if(chatting == table[i].userID) {
-          tempKey = table[i].publicKey;
-          for(int k = 0; k < tempKey.length(); k++) {
-            chat[k] = tempKey[k];
-          }
-          send(server, chat, bufferSize, 0);
-          running = false;
-          break;
-        }
-
-        if(count <= i) {
-          chat = "";
-          send(server, chat, bufferSize, 0);
-          running = false;
-          break;
-        }
+      if(count <= i) {
+        chat = "";
+        send(server, chat, bufferSize, 0);
+        break;
       }
-    }while(running);
+    }
   }
 
   // Hang up
