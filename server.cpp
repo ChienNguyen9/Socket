@@ -23,7 +23,7 @@ struct serverTable{
 int main() {
 
   serverTable table[1024];
-  int count = 0;
+  int count = 0, notFound = 0;
   string fileName, tempID, tempKey, terminate = "";
   string chatting = "", found = "NOT FOUND";
   bool running = true;
@@ -93,23 +93,24 @@ int main() {
         chatting += chat[i];
       }
 
-      for(int i = 0; i < 1024; i++) {
+      for(int i = 0; i < count+1; i++) {
         // Reply with the requested public key
         if(chatting == table[i].userID) {
           for(int k = 0; k < (table[i].publicKey).length(); k++) {
-            chat[k] = (table[i].length())[k];
+            chat[k] = (table[i].publicKey)[k];
           }
           send(server, chat, bufferSize, 0);
           break;
         }
 
-        if(table[i].userID == "") {
+        if(count+1 == notFound) {
           for(int r = 0; r < found.length(); i++) {
             chat[r] = found[r];
           }
           send(server, chat, bufferSize, 0);
           break;
         }
+        notFound++;
       }
     }while(chatting == "");
     chatting = "";
