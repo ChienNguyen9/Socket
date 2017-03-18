@@ -18,7 +18,6 @@ using namespace std;
 int main() {
 
   const int MAXHOSTNAME = 9;
-  bool running = true;
   string tempName, chatting = "";
   string terminate = "";
   int portNumber, sock;
@@ -62,31 +61,26 @@ int main() {
       cin >> chat;
       send(sock, chat, bufferSize, 0);
 
-      running = true;
       terminate = "";
       for(int i = 0; i < strlen(chat); i++) {
         terminate += chat[i];
       }
 
-      do{
-        // Wait for the user's private key
-        recv(sock, chat, bufferSize, 0);
+      // Wait for the user's private key
+      recv(sock, chat, bufferSize, 0);
 
-        for(int a = 0; a < strlen(chat); a++) {
-          chatting += chat[a];
-        }
+      for(int a = 0; a < strlen(chat); a++) {
+        chatting += chat[a];
+      }
 
-        if(terminate != "Terminate.") {
-          if(chatting == "") {
-            cout << "NOT FOUND" << endl;
-            running = false;
-          }else{
-            // Print out the key it got from the server
-            cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
-            running = false;
-          }
+      if(terminate != "Terminate.") {
+        if(chat == "\0") {
+          cout << "NOT FOUND" << endl;
+        }else{
+          // Print out the key it got from the server
+          cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
         }
-      }while(running);
+      }
     }
   }else{
     cout << "Could not connect to server..." << endl;
