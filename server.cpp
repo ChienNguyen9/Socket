@@ -80,30 +80,34 @@ int main() {
     return (-1);
   }
 
-  cout << "Type \"Terminate.\" to exit. \t" << endl;
+  cout << "\nType \"Terminate.\" to exit. \n" << endl;
 
   // Accept incoming calls (and get a new socket) - client says
-  while((terminate != "Terminate.") && (terminate != "Terminate") && (terminate != "terminate")) {
+  while(terminate != "Terminate.") {
     cout << "Server connected..." << endl;
 
-    recv(server, chat, bufferSize, 0);
-    for(int i = 0; i < strlen(chat); i++) {
-      terminate += chat[i];
-    }
-
-    for(int i = 0; i < 1024; i++) {
-      // Reply with the requested public key
-      if(tempID == table[i].userID) {
-        send(server, chat, bufferSize, 0);
-        break;
+    do {
+      recv(server, chat, bufferSize, 0);
+      terminate = "";
+      for(int i = 0; i < strlen(chat); i++) {
+        terminate += chat[i];
+        chatting += chat[i];
       }
 
-      if((i == 1023) && (tempID != table[i].userID)) {
-        strcpy(chat, "NOT FOUND");
-        send(server, chat, bufferSize, 0);
-      }
-    }
+      for(int i = 0; i < 1024; i++) {
+        // Reply with the requested public key
+        if(tempID == table[i].userID) {
+          send(server, chat, bufferSize, 0);
+          break;
+        }
 
+        if((i == 1023) && (tempID != table[i].userID)) {
+          strcpy(chat, "NOT FOUND");
+          send(server, chat, bufferSize, 0);
+        }
+      }
+    }while(chatting == "");
+    chatting = "";
   }
 
   // Hang up
