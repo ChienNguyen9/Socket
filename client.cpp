@@ -83,6 +83,7 @@ int main() {
           }
         }
       }while(chatting == "");
+      chatting = "";
     }
   }else{
     cout << "Could not connect to server..." << endl;
