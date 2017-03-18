@@ -18,7 +18,7 @@ using namespace std;
 int main() {
 
   const int MAXHOSTNAME = 9;
-  bool running = false;
+  bool running = true;
   string tempName, chatting = "";
   string terminate = "";
   int portNumber, sock;
@@ -54,6 +54,8 @@ int main() {
   sa.sin_family = AF_INET;
   sa.sin_port = htons(portNumber);
 
+  cout << "\nType \"Terminate.\" to exit. \n" << endl;
+
   // Connect it to server
   if(connect(sock, (struct sockaddr*)&sa, sizeof(sa)) == 0) {
     // Send the user name to the server
@@ -64,34 +66,37 @@ int main() {
         cout << "\nEnter a user name: ";
         cin >> chat;
         send(sock, chat, bufferSize, 0);
-        running = true;
+        running = false;
 
         terminate = "";
         for(int i = 0; i < strlen(chat); i++) {
           terminate += chat[i];
         }
       }while(running);
-      running = false;
+      running = true;
 
       memset(chat, 0, sizeof(chat));
-      do{
-        // Wait for the user's private key
-        recv(sock, chat, bufferSize, 0);
+      if(terminate != "Terminate.")
+        do{
+          // Wait for the user's private key
+          recv(sock, chat, bufferSize, 0);
 
-        for(int a = 0; a < strlen(chat); a++) {
-          chatting += chat[a];
-        }
+          for(int a = 0; a < strlen(chat); a++) {
+            chatting += chat[a];
+          }
 
-        if(chat == "\0") {
-          cout << "NOT FOUND" << endl;
-          running = true;
-        }else{
-          // Print out the key it got from the server
-          cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
-          running = true;
-        }
-      }while(running);
-      running = false;
+          if(chat[0] == ' ') {
+            cout << "NOT FOUND" << endl;
+            running = false;
+          }else{
+            // Print out the key it got from the server
+            cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
+            running = false;
+          }
+        }while(running);
+      }
+      chatting = "";
+      running = true;
     }
   }else{
     cout << "Could not connect to server..." << endl;
