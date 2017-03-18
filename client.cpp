@@ -76,7 +76,7 @@ int main() {
       running = true;
 
       memset(chat, 0, sizeof(chat));
-      if(terminate != "Terminate.")
+      if(terminate != "Terminate.") {
         do{
           // Wait for the user's private key
           recv(sock, chat, bufferSize, 0);
