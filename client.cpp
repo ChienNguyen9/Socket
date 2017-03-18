@@ -70,6 +70,7 @@ int main() {
         // Wait for the user's private key
         recv(sock, chat, bufferSize, 0);
 
+        chatting = "";
         for(int i = 0; i < strlen(chat); i++) {
           chatting += chat[i];
         }
@@ -81,7 +82,6 @@ int main() {
           cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
         }
       }while(chatting == "");
-      chatting = "";
     }
   }else{
     cout << "Could not connect to server..." << endl;
