@@ -25,7 +25,7 @@ int main() {
   serverTable table[1024];
   int count = 0, foundCount = 0;
   string fileName, tempID, tempKey, terminate = "";
-  string chatting = "", notfound = "NOT FOUND";
+  string chatting = "", notFound = "NOT FOUND";
   bool running = true;
   int sock, portNumber, server;
   int bufferSize = 1048;
@@ -101,7 +101,6 @@ int main() {
             chat[k] = tempKey[k];
           }
           send(server, chat, bufferSize, 0);
-          break;
         }
         chatting = "";
         if(count == foundCount) {
