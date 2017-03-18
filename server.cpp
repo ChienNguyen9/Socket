@@ -23,7 +23,7 @@ struct serverTable{
 int main() {
 
   serverTable table[1024];
-  int count = 0, foundCount = 0;
+  int count = 0;
   string fileName, tempID, tempKey, terminate = "";
   string chatting = "", notFound = "NOT FOUND";
   bool running = true;
@@ -84,7 +84,8 @@ int main() {
   // Accept incoming calls (and get a new socket) - client says
   while(terminate != "Terminate.") {
     cout << "Server connected..." << endl;
-
+    running = true;
+    
     do {
       recv(server, chat, bufferSize, 0);
       terminate = "";
@@ -93,7 +94,7 @@ int main() {
         chatting += chat[i];
       }
 
-      for(int i = 0; i <= count; i++) {
+      for(int i = 0; i < count; i++) {
         // Reply with the requested public key
         if(chatting == table[i].userID) {
           tempKey = table[i].publicKey;
@@ -101,20 +102,20 @@ int main() {
             chat[k] = tempKey[k];
           }
           send(server, chat, bufferSize, 0);
+          running = false;
+          break;
         }
-        chatting = "";
-        if(count == foundCount) {
-          for(int r = 0; r < notFound.length(); i++) {
+
+        if(count == i) {
+          for(int r = 0; r < notFound.length()+1; i++) {
             chat[r] = notFound[r];
           }
           send(server, chat, bufferSize, 0);
+          running = false;
           break;
         }
-        foundCount++;
       }
-    }while(chatting != "");
-    chatting = "";
-    foundCount = 0;
+    }while(running);
   }
 
   // Hang up
