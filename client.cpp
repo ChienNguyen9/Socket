@@ -74,12 +74,13 @@ int main() {
         for(int i = 0; i < strlen(chat); i++) {
           chatting += chat[i];
         }
-
-        if(chatting == "NOT FOUND") {
-          cout << "NOT FOUND" << endl;
-        }else{
-          // Print out the key it got from the server
-          cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
+        if(terminate != "Terminate.") {
+          if(chatting == "NOT FOUND") {
+            cout << "NOT FOUND" << endl;
+          }else{
+            // Print out the key it got from the server
+            cout << "The public key for user " << terminate << " is " << chatting << ". \n\n";
+          }
         }
       }while(chatting == "");
     }
