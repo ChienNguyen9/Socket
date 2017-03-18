@@ -23,6 +23,7 @@ struct serverTable{
 int main() {
 
   serverTable table[1024];
+  bool running = false;
   int count = 0;
   string fileName, tempID, tempKey, terminate = "";
   string chatting = "";
@@ -89,12 +90,14 @@ int main() {
     do{
       recv(server, chat, bufferSize, 0);
 
+      running = true;
       terminate = "";
       for(int i = 0; i < strlen(chat); i++) {
         terminate += chat[i];
         chatting += chat[i];
       }
-    }while(*chat != "\0");
+    }while(running);
+    running = false;
 
     memset(chat, 0, sizeof(chat));
     if(chatting != "Terminate.") {
@@ -106,17 +109,20 @@ int main() {
             for(int k = 0; k < tempKey.length(); k++) {
               chat[k] = tempKey[k];
             }
+            running = true;
             send(server, chat, bufferSize, 0);
             break;
           }
 
           if(count <= i) {
             memset(chat, 0, sizeof(chat));
+            running = true;
             send(server, chat, bufferSize, 0);
             break;
           }
         }
-      }while(*chat != "\0");
+      }while(running);
+      running = false;
     }
 
     if(terminate == "Terminate.") {
