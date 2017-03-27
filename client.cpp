@@ -31,13 +31,20 @@ int main() {
 
   memset(&sa, 0, sizeof(struct sockaddr_in));
 
-  // Prompt user for server's user name
-  cout << "Enter a server host name: ";
-  cin >> myName;
-  hp = gethostbyname(myName);
-  if(hp == NULL) {
-    cout << "Could not get server's host name..." << endl;
-    return (-1);
+  while(tempName != "program.cs.uh.edu") {
+    // Prompt user for server's user name
+    tempName = "";
+    cout << "Press \"exit\" to close... \t\t";
+    cout << "Enter a server host name: ";
+    cin >> myName;
+    hp = gethostbyname(myName);
+    for(int i = 0; i < strlen(myName); i++) {
+      tempName += myName[i];
+    }
+    if(tempName == "exit") {
+      cout << "Could not get server's host name..." << endl;
+      return (-1);
+    }
   }
 
   // Prompt user for server's port number
